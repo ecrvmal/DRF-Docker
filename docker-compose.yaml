@@ -7,31 +7,25 @@ services:
     ports:
       - 5432:5432
     environment:
-      POSTGRES_USER: dante
+      POSTGRES_USER: dante1
       POSTGRES_PASSWORD: dante123456
       POSTGRES_DB: TodoList
-#  adminer:
-#    image: adminer:4.7.8-standalone
-#    restart: always
-#    ports:
-#      - 8080:8080
-#    depends_on:
-#      - db
   backend:
     build:
       context: .
-    expose:
-      - 8080
+    ports:
+      - 8080:8080
     command: bash -c "
       ./wait-for-postgres.sh db
       && python manage.py migrate
-      && python manage.py create_project_and_todo
+      && python manage.py loaddata ./TodoList/fixtures/users.json
+      && python manage.py loaddata ./TodoList/fixtures/projects.json
+      && python manage.py loaddata ./TodoList/fixtures/todo.json
       && gunicorn TodoList.wsgi -b 0.0.0.0:8080
       "
     depends_on:
       - db
   nginx:
-    build: ./nginx
     build: ./nginx
     ports:
       - 8000:80
@@ -43,5 +37,3 @@ services:
       - 80:80
     depends_on:
       - nginx
-      
-

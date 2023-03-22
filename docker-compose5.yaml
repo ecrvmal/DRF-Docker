@@ -12,7 +12,7 @@ services:
       POSTGRES_DB: TodoList
   backend:
     build:
-    context: .
+      context: .
     expose:
       - 8080
     command: bash -c "
@@ -31,4 +31,10 @@ services:
       - 8000:80
     depends_on:
       - backend
-      
+  frontend:
+    build ./frontend
+    ports:
+      -80:80
+    depends_on:
+      -nginx
+  

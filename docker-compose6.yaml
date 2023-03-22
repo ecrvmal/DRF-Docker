@@ -7,12 +7,19 @@ services:
     ports:
       - 5432:5432
     environment:
-      POSTGRES_USER: dante1
+      POSTGRES_USER: dante
       POSTGRES_PASSWORD: dante123456
       POSTGRES_DB: TodoList
+#  adminer:
+#    image: adminer:4.7.8-standalone
+#    restart: always
+#    ports:
+#      - 8080:8080
+#    depends_on:
+#      - db
   backend:
     build:
-    context: .
+      context: .
     expose:
       - 8080
     command: bash -c "
@@ -27,8 +34,16 @@ services:
       - db
   nginx:
     build: ./nginx
+    build: ./nginx
     ports:
       - 8000:80
     depends_on:
       - backend
+  frontend:
+    build: ./frontend
+    ports:
+      - 80:80
+    depends_on:
+      - nginx
       
+

@@ -7,7 +7,7 @@ host="$1"
 shift
 cmd="$@"
 
-until PGPASSWORD="dante123456" psql -h "$host" -d "TodoList" -U "dante" -c '\q'; do
+until PGPASSWORD="dante123456" psql -h "$host" -d "TodoList" -U "dante1" -c '\q'; do
   >&2 echo "Postgres is unavailable - sleeping"
   sleep 1
 done
